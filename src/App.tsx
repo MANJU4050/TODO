@@ -1,10 +1,8 @@
+import RootRouter from "./router"
 
 const App = () => {
   return (
-    <div>
-      App
-      
-    </div>
+    <RootRouter />
   )
 }
 
