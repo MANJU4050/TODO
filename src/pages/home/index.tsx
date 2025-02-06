@@ -4,11 +4,15 @@ import { getTodosApi } from "@/api/todo"
 import { getUsersApi } from "@/api/users"
 import TodoCard from "@/components/pages/home/TodoCard"
 import { TodoCardData, TodoData, User } from "@/interfaces"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 
 const Home = () => {
 
   const [todoList, setTodoList] = useState<TodoCardData[]>([])
+  const navigate = useNavigate()
   const getTodoList = async () => {
     try {
 
@@ -39,8 +43,14 @@ const Home = () => {
   })
 
   return (
-    <div className="flex gap-4 flex-wrap">
-      {todos}
+    <div className="flex flex-col  gap-10">
+      <div className="flex justify-between items-center">
+        <div><input /></div>
+        <div><Button onClick={()=> navigate('/add')}> <Plus />New Task</Button></div>
+      </div>
+      <div className="flex gap-4 flex-wrap">
+        {todos}
+      </div>
     </div>
   )
 }
