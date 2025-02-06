@@ -21,7 +21,7 @@ const Home = () => {
 
       const updateTodos = todos?.map((todo: TodoData) => {
         const user = users?.find((user: User) => {
-          return user?.id === todo.id.toString()
+          return user?.id === todo.assignedUser.toString()
         })
 
         return { ...todo, assignedUserName: user?.name }
