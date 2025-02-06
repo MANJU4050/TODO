@@ -67,7 +67,7 @@ const Home = () => {
 
   const debounceSearch = useCallback(debounce((search: string) => {
     getTodoList(search, status, userId, sortBy, page, itemPerPage)
-  }, 500), [])
+  }, 500), [status, userId, sortBy, page, itemPerPage])
 
   useEffect(() => {
     return () => debounceSearch.cancel();
