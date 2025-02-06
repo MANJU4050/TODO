@@ -29,7 +29,7 @@ const TodoCard: React.FC<TodoCardProps> = ({ id, assignedUserName, description, 
 
 
     return (
-        <div className="flex flex-col bg-slate-700 w-full max-w-md p-4 gap-4 rounded text-white">
+        <div className="flex flex-col bg-slate-700 w-full max-w-md p-4 gap-4 rounded text-white max-h-[250px]">
             <div className="flex flex-col gap-2 items-start">
                 <div className="flex justify-between items-center w-full">
                     <div className="text-2xl">{title}</div>

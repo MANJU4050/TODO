@@ -1,8 +1,8 @@
 import { TodoData } from "@/interfaces";
 import api from "..";
 
-export const getTodosApi = async (searchTerm: string, status: string, userId: string, sortBy: string) => {
-    const { data } = await api.get(`/todo?title=${searchTerm}&status=${status}&assignedUser=${userId}&_sort=${sortBy}`)
+export const getTodosApi = async (searchTerm: string, status: string, userId: string, sortBy: string, page: number, itemPerPage: number) => {
+    const { data } = await api.get(`/todo?title=${searchTerm}&status=${status}&assignedUser=${userId}&_sort=${sortBy}&_page=${page}&_per_page=${itemPerPage}`)
     return data
 }
 

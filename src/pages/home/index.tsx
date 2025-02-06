@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { debounce } from 'lodash'
+import ReactPaginate from 'react-paginate';
 
 
 const Home = () => {
@@ -31,14 +32,17 @@ const Home = () => {
   const [userId, setUserId] = useState('')
   const [users, setUsers] = useState<User[]>([])
   const [sortBy, setSortBy] = useState('title')
+  const [page, setPage] = useState(1)
+  const [itemPerPage] = useState(8)
+  const [pageCount, setPageCount] = useState(1)
 
-  const getTodoList = async (search = '', status = '', userId = '', sortBy = 'title') => {
+  const getTodoList = async (search = '', status = '', userId = '', sortBy = 'title', page = 1, itemPerPage = 8) => {
     try {
 
-      const todos = await getTodosApi(search, status, userId, sortBy)
+      const todos = await getTodosApi(search, status, userId, sortBy, page, itemPerPage)
       const users = await getUsersApi()
 
-      const updateTodos = todos?.map((todo: TodoData) => {
+      const updateTodos = todos?.data?.map((todo: TodoData) => {
         const user = users?.find((user: User) => {
           return user?.id === todo.assignedUser.toString()
         })
@@ -46,6 +50,8 @@ const Home = () => {
         return { ...todo, assignedUserName: user?.name }
       })
 
+      const totalPages = Math.ceil(todos?.items / itemPerPage);
+      setPageCount(totalPages);
       setTodoList(updateTodos)
       setUsers(users)
 
@@ -77,12 +83,17 @@ const Home = () => {
   }
 
   useEffect(() => {
-    getTodoList(searchTerm, status, userId, sortBy)
-  }, [status, userId, sortBy])
+    getTodoList(searchTerm, status, userId, sortBy, page, itemPerPage)
+  }, [status, userId, sortBy, page])
 
   const debounceSearch = useCallback(debounce((search: string) => {
-    getTodoList(search, status, userId, sortBy)
+    getTodoList(search, status, userId, sortBy, page, itemPerPage)
   }, 500), [])
+
+  useEffect(() => {
+    return () => debounceSearch.cancel();
+  }, []);
+
 
 
 
@@ -104,13 +115,18 @@ const Home = () => {
     setSortBy(e.target.value)
   }
 
+  const handlePageClick = (event: any) => {
+    setPage(event.selected + 1)
+
+  }
+
   const todos = todoList?.map((todo) => {
     return <TodoCard key={todo.id} {...todo} setIsOpen={setIsOpen} setDeleteId={setDeleteId} />
   })
 
   return (
     <>
-      <div className="flex flex-col  gap-10">
+      <div className="flex flex-col  gap-10 h-full">
         <div className="flex justify-between items-center gap-2">
           <div className="flex-1 flex gap-2">
             <input className=" h-[40px] rounded-md pl-4" placeholder="search by title..." type="text" onChange={handleSearchChange} value={searchTerm} />
@@ -125,7 +141,7 @@ const Home = () => {
               <option value=''>all users</option>
               {
                 users?.map((user) => {
-                  return <option value={user?.id}>{user?.email}</option>
+                  return <option key={user?.id} value={user?.id}>{user?.email}</option>
                 })
               }
             </select>
@@ -138,8 +154,27 @@ const Home = () => {
           </div>
           <div><Button onClick={() => navigate('/add')}> <Plus />New Task</Button></div>
         </div>
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex gap-4 flex-wrap  flex-1">
           {todos}
+        </div>
+        <div className="flex justify-center items-center ">
+
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="Next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={pageCount}
+            previousLabel="< Previous"
+            renderOnZeroPageCount={null}
+            containerClassName="flex items-center space-x-2 justify-center mt-4"
+            pageClassName="border rounded-lg w-10 h-10 flex items-center justify-center hover:bg-gray-200 cursor-pointer"
+            pageLinkClassName="w-full h-full flex items-center justify-center"
+            activeClassName="bg-blue-500 text-white"
+            previousClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
+            nextClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
+            disabledClassName="opacity-50"
+          />
         </div>
       </div>
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
