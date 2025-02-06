@@ -1,4 +1,4 @@
-import { TodoData } from "@/interfaces";
+import {  TodoDataPayload } from "@/interfaces";
 import api from "..";
 
 export const getTodosApi = async (searchTerm: string, status: string, userId: string, sortBy: string, page: number, itemPerPage: number) => {
@@ -6,7 +6,7 @@ export const getTodosApi = async (searchTerm: string, status: string, userId: st
     return data
 }
 
-export const addTodoApi = async (payload: TodoData) => {
+export const addTodoApi = async (payload: TodoDataPayload) => {
     const { data } = await api.post('/todo', payload)
     return data
 }
@@ -16,7 +16,7 @@ export const deleteTodoApi = async (id: string) => {
     return data
 }
 
-export const editTaskApi = async (id: string, payload: TodoData) => {
+export const editTaskApi = async (id: string, payload: TodoDataPayload) => {
     const { data } = await api.patch(`/todo/${id}`, payload)
     return data
 }
