@@ -9,24 +9,21 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-import { deleteTodoApi, getTodosApi } from "@/api/todo"
+import { getTodosApi } from "@/api/todo"
 import { getUsersApi } from "@/api/users"
 import TodoCard from "@/components/pages/home/TodoCard"
-import { TodoCardData, TodoData, User } from "@/interfaces"
+import { TodoData, User } from "@/interfaces"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { debounce } from 'lodash'
 import ReactPaginate from 'react-paginate';
+import useGetUsers from "@/hooks/useGetUsers"
 
 
 const Home = () => {
 
-  const [todoList, setTodoList] = useState<TodoCardData[]>([])
   const navigate = useNavigate()
-  const [isOpen, setIsOpen] = useState(false)
-  const [deleteId, setDeleteId] = useState<string>('')
-  const [isDeleting, setIsDeleting] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [status, setStatus] = useState('')
   const [userId, setUserId] = useState('')
@@ -35,6 +32,8 @@ const Home = () => {
   const [page, setPage] = useState(1)
   const [itemPerPage] = useState(8)
   const [pageCount, setPageCount] = useState(1)
+
+  const { setTodoList, todoList, setIsOpen, setDeleteId, isOpen, isDeleting, handleDelete } = useGetUsers()
 
   const getTodoList = async (search = '', status = '', userId = '', sortBy = 'title', page = 1, itemPerPage = 8) => {
     try {
@@ -60,27 +59,7 @@ const Home = () => {
     }
   }
 
-  const handleDelete = async () => {
-    try {
-      setIsDeleting(true)
-      await deleteTodoApi(deleteId)
 
-      setTodoList((prev) => {
-        return prev?.filter((todo) => {
-          return todo.id !== deleteId
-        })
-      })
-
-      setDeleteId("")
-      setIsOpen(false)
-
-    } catch (error) {
-      setIsDeleting(false)
-      console.error(error)
-    } finally {
-      setIsDeleting(false)
-    }
-  }
 
   useEffect(() => {
     getTodoList(searchTerm, status, userId, sortBy, page, itemPerPage)

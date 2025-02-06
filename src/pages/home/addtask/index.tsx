@@ -1,21 +1,15 @@
 import { z } from "zod"
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { addTodoApi } from "@/api/todo"
 import Loader from "@/components/loader"
-import { getUsersApi } from "@/api/users"
-import { TodoDataPayload, User } from "@/interfaces"
+import { TodoDataPayload } from "@/interfaces"
 import { Button } from "@/components/ui/button"
+import useGetUsers from "@/hooks/useGetUsers"
 
 const AddTask = () => {
 
-  const [users, setUsers] = useState<User[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [isAdding, setIsAdding] = useState(false)
-  const navigate = useNavigate()
+  const { isLoading, users, addTask, isAdding } = useGetUsers()
 
   const todoSchema = z.object({
     title: z.string().min(3, "minimum 3 characters").max(12, 'maximum of 12 characters'),
@@ -38,43 +32,9 @@ const AddTask = () => {
     }
   })
 
-  const getUsers = async () => {
-    try {
-      setIsLoading(true)
-      const users = await getUsersApi()
-      setUsers(users)
-
-    } catch (error) {
-      setIsLoading(false)
-      console.error(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const addTask = async (data: TodoDataPayload) => {
-    try {
-      setIsAdding(true)
-      const response = await addTodoApi(data)
-
-      console.log(response, "add response")
-      navigate('/')
-
-    } catch (error) {
-      setIsAdding(false)
-      console.error(error)
-    } finally {
-      setIsAdding(false)
-    }
-  }
-
   const onSubmit = (data: TodoDataPayload) => {
     addTask(data)
   }
-
-  useEffect(() => {
-    getUsers()
-  }, [])
 
   const userOptions = users?.map((user) => {
     return <option key={user?.id} value={user?.id}>{user?.email}</option>
