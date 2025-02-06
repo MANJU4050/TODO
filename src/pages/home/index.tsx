@@ -108,7 +108,7 @@ const Home = () => {
       <div className="flex flex-col  gap-10 h-full">
         <div className="flex justify-between items-center gap-2">
           <div className="flex-1 flex gap-2">
-            <input className=" h-[40px] rounded-md pl-4" placeholder="search by title..." type="text" onChange={handleSearchChange} value={searchTerm} />
+            <input className=" h-[40px] w-full rounded-md pl-4" placeholder="search by title..." type="text" onChange={handleSearchChange} value={searchTerm} />
             <select className="rounded-md" onChange={handleStatusChange} value={status}>
               <option value=''>all status</option>
               <option value='todo'>todo</option>
@@ -124,14 +124,14 @@ const Home = () => {
                 })
               }
             </select>
-            <select className="rounded-md" value={sortBy} onChange={handlesortByChange}>
-              <option value='title'>title asc</option>
-              <option value='-title'>title desc</option>
-              <option value='dueDate'>dueDate asc</option>
-              <option value='-dueDate'>dueDate desc</option>
+            <select className="rounded-md px-1" value={sortBy} onChange={handlesortByChange}>
+              <option value='title'>sort by title - asc</option>
+              <option value='-title'>sort by title - desc</option>
+              <option value='dueDate'>sort by due date - asc</option>
+              <option value='-dueDate'>sort by due date - desc</option>
             </select>
           </div>
-          <div><Button onClick={() => navigate('/add')}> <Plus />New Task</Button></div>
+          <div className="flex-1 flex justify-end"><Button className="w-[200px] h-[40px]" onClick={() => navigate('/add')}> <Plus />New Task</Button></div>
         </div>
         <div className="flex gap-4 flex-wrap  flex-1">
           {todoList?.length !== 0 ? todos : <div className=" w-full flex justify-center items-center">
