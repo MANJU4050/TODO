@@ -6,7 +6,12 @@ export const getTodosApi = async () => {
     return data
 }
 
-export const addTodoApi = async (payload:TodoData) => {
+export const addTodoApi = async (payload: TodoData) => {
     const { data } = await api.post('/todo', payload)
+    return data
+}
+
+export const deleteTodoApi = async (id: string) => {
+    const { data } = await api.delete(`/todo/${id}`)
     return data
 }

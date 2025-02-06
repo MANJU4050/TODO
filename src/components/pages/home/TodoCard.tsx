@@ -1,17 +1,30 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Calendar, CircleUser, Pencil, Trash2 } from 'lucide-react'
+import { Dispatch, SetStateAction } from "react";
 
 interface TodoCardProps {
-    assignedUserName: string,
+    id: string;
+    assignedUserName: string;
     description: string;
-    dueDate: string,
-    priority: string,
-    status: string,
-    title: string
+    dueDate: string;
+    priority: string;
+    status: string;
+    title: string;
+    setIsOpen: Dispatch<SetStateAction<boolean>>
+    setDeleteId: Dispatch<SetStateAction<string>>
+
 }
 
-const TodoCard: React.FC<TodoCardProps> = ({ assignedUserName, description, dueDate, priority, status, title }) => {
+const TodoCard: React.FC<TodoCardProps> = ({ id, assignedUserName, description, dueDate, priority, status, title, setIsOpen, setDeleteId }) => {
+
+    const handleDelete = (id: string) => {
+        setIsOpen(true)
+        setDeleteId(() => {
+            return id
+        })
+    }
+
     return (
         <div className="flex flex-col bg-slate-700 w-full max-w-md p-4 gap-4 rounded text-white">
             <div className="flex flex-col gap-2 items-start">
@@ -27,7 +40,9 @@ const TodoCard: React.FC<TodoCardProps> = ({ assignedUserName, description, dueD
             </div>
             <div className="flex justify-between">
                 <Button> <Pencil />Edit</Button>
-                <Button className="bg-red-500 hover:bg-red-400"> <Trash2 />Delete</Button>
+                <Button className="bg-red-500 hover:bg-red-400" onClick={() => {
+                    handleDelete(id)
+                }}> <Trash2 />Delete</Button>
 
             </div>
 
