@@ -2,12 +2,12 @@
   "todo": [
     {
       "id": "1",
-      "title": "1Learn JavaScript",
+      "title": "1Learn JavaS",
       "status": "todo",
       "dueDate": "2020-12-31",
-      "description": "Learn JavaScript basics",
+      "description": "Learn JavaScript b",
       "assignedUser": "1",
-      "priority": "high",
+      "priority": "low",
       "tags": []
     },
     {
