@@ -9,11 +9,13 @@ interface AuthContextType {
     isAuthenticated: boolean;
     user: string;
     login: (username: string, password: string) => Promise<{ message: string, statusCode: number }>;
+    logout: () => void
 }
 const AuthContext = createContext<AuthContextType>({
     isAuthenticated: false,
     user: "",
-    login: async () => ({ message: "", statusCode: 0 })
+    login: async () => ({ message: "", statusCode: 0 }),
+    logout: () => { }
 })
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -53,6 +55,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     }
 
+    const logout = () => {
+        setIsAuthenticated(false)
+        setUser("")
+        localStorage.removeItem("user")
+    }
+
     useEffect(() => {
         const isAuth = localStorage.getItem("user")
         if (isAuth) {
@@ -62,7 +70,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }, [])
 
     const contextValue = {
-        isAuthenticated, user, login
+        isAuthenticated, user, login, logout
     }
 
     return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
