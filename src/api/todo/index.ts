@@ -1,8 +1,8 @@
 import { TodoData } from "@/interfaces";
 import api from "..";
 
-export const getTodosApi = async () => {
-    const { data } = await api.get('/todo')
+export const getTodosApi = async (searchTerm: string) => {
+    const { data } = await api.get(`/todo?title=${searchTerm}`)
     return data
 }
 

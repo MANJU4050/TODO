@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -17,6 +16,7 @@ import { TodoCardData, TodoData, User } from "@/interfaces"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { debounce } from 'lodash'
 
 
 const Home = () => {
@@ -26,10 +26,12 @@ const Home = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [deleteId, setDeleteId] = useState<string>('')
   const [isDeleting, setIsDeleting] = useState(false)
-  const getTodoList = async () => {
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const getTodoList = async (search = '') => {
     try {
 
-      const todos = await getTodosApi()
+      const todos = await getTodosApi(search)
       const users = await getUsersApi()
 
       const updateTodos = todos?.map((todo: TodoData) => {
@@ -50,7 +52,7 @@ const Home = () => {
   const handleDelete = async () => {
     try {
       setIsDeleting(true)
-      const response = await deleteTodoApi(deleteId)
+      await deleteTodoApi(deleteId)
 
       setTodoList((prev) => {
         return prev?.filter((todo) => {
@@ -58,8 +60,6 @@ const Home = () => {
         })
       })
 
-      console.log(response, "response")
-      console.log(deleteId, "delete id")
       setDeleteId("")
       setIsOpen(false)
 
@@ -73,7 +73,20 @@ const Home = () => {
 
   useEffect(() => {
     getTodoList()
-  }, [])
+  }
+    , [])
+
+  const debounceSearch = useCallback(debounce((search: string) => {
+    getTodoList(search)
+  }, 500), [])
+
+
+
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value)
+    debounceSearch(e.target.value)
+  }
 
   const todos = todoList?.map((todo) => {
     return <TodoCard key={todo.id} {...todo} setIsOpen={setIsOpen} setDeleteId={setDeleteId} />
@@ -82,8 +95,9 @@ const Home = () => {
   return (
     <>
       <div className="flex flex-col  gap-10">
-        <div className="flex justify-between items-center">
-          <div><input /></div>
+        <div className="flex justify-between items-center gap-2">
+          <div className="flex-1 ">
+            <input className=" h-[40px] rounded-md pl-4" placeholder="search by title..." type="text" onChange={handleSearchChange} value={searchTerm} /></div>
           <div><Button onClick={() => navigate('/add')}> <Plus />New Task</Button></div>
         </div>
         <div className="flex gap-4 flex-wrap">
