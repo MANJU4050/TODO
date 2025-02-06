@@ -1,19 +1,20 @@
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import Loader from "@/components/loader"
 import { TodoDataPayload } from "@/interfaces"
 import { Button } from "@/components/ui/button"
-import useGetUsers from "@/hooks/useGetUsers"
+import useTaskManage from "@/hooks/useTaskManage"
 
 
 const EditTask = () => {
 
   const { id } = useParams()
-  const { editTask, isEditing, users, getTodo, isLoadingTodo } = useGetUsers()
+  const { editTask, isEditing, users, getTodo, isLoadingTodo } = useTaskManage()
+  const navigate = useNavigate()
 
 
   const todoSchema = z.object({
@@ -67,12 +68,12 @@ const EditTask = () => {
   return (
 
     <div className=" h-full flex justify-center items-center ">
-      <div className=" w-[600px] flex flex-col gap-8 p-4 bg-slate-700 rounded-md">
+      <div className=" w-[400px] flex flex-col gap-8 px-4 py-10 bg-slate-700 rounded-md">
         <h1 className="text-4xl text-white text-center">EDIT TASK</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <input {...register("title")} className="min-h-[40px] px-2 rounded" type="text" placeholder="title" />
           {errors.title?.message && <p className="text-red-500">{errors.title.message}</p>}
-          <input {...register("description")} className="min-h-[40px] px-2 rounded" type="text" placeholder="description" />
+          <textarea {...register("description")} className="min-h-[40px] p-2 rounded" rows={3} placeholder="description" />
           {errors.description?.message && <p className="text-red-500">{errors.description.message}</p>}
           <input {...register("dueDate")} className="min-h-[40px] px-2 rounded" type="date" />
           {errors.dueDate?.message && <p className="text-red-500">{errors.dueDate.message}</p>}
@@ -92,7 +93,12 @@ const EditTask = () => {
             <option value='low'>low</option>
           </select>
           {errors.priority?.message && <p className="text-red-500">{errors.priority.message}</p>}
-          <Button type='submit'>{isEditing ? "Updating" : "Update"}</Button>
+          <div className="flex w-full gap-2">
+          <Button type="button" onClick={()=>{navigate('/')}} variant='secondary'>Cancel</Button>
+
+          <Button className="flex-1" type='submit'>{isEditing ? "Updating" : "Update"}</Button>
+
+          </div>
 
         </form>
 

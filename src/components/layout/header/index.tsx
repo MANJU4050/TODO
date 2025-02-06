@@ -20,7 +20,7 @@ const Header = () => {
       <div className="flex gap-4 justify-center items-center">
         <div className="bg-gray-700 text-white p-2 rounded flex justify-center items-center gap-1">
           {user}
-          {isOnline ? <div className="w-[10px] h-[10px] bg-green-400 rounded-full"></div> : <div className="w-[10px] h-[10px] bg-red-600 rounded-full"></div>}
+          {isOnline ? <div className="w-[10px] h-[10px] bg-green-400 rounded-full"></div> : null}
         </div>
 
 

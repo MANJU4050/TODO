@@ -18,7 +18,7 @@ import { Plus } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { debounce } from 'lodash'
 import ReactPaginate from 'react-paginate';
-import useGetUsers from "@/hooks/useGetUsers"
+import useTaskManage from "@/hooks/useTaskManage"
 
 
 const Home = () => {
@@ -33,7 +33,7 @@ const Home = () => {
   const [itemPerPage] = useState(8)
   const [pageCount, setPageCount] = useState(1)
 
-  const { setTodoList, todoList, setIsOpen, setDeleteId, isOpen, isDeleting, handleDelete } = useGetUsers()
+  const { setTodoList, todoList, setIsOpen, setDeleteId, isOpen, isDeleting, handleDelete } = useTaskManage()
 
   const getTodoList = async (search = '', status = '', userId = '', sortBy = 'title', page = 1, itemPerPage = 8) => {
     try {
@@ -67,7 +67,7 @@ const Home = () => {
 
   const debounceSearch = useCallback(debounce((search: string) => {
     getTodoList(search, status, userId, sortBy, page, itemPerPage)
-  }, 500), [])
+  }, 500), [status, userId, sortBy, page, itemPerPage])
 
   useEffect(() => {
     return () => debounceSearch.cancel();
@@ -108,7 +108,7 @@ const Home = () => {
       <div className="flex flex-col  gap-10 h-full">
         <div className="flex justify-between items-center gap-2">
           <div className="flex-1 flex gap-2">
-            <input className=" h-[40px] rounded-md pl-4" placeholder="search by title..." type="text" onChange={handleSearchChange} value={searchTerm} />
+            <input className=" h-[40px] w-full rounded-md pl-4" placeholder="search by title..." type="text" onChange={handleSearchChange} value={searchTerm} />
             <select className="rounded-md" onChange={handleStatusChange} value={status}>
               <option value=''>all status</option>
               <option value='todo'>todo</option>
@@ -124,37 +124,45 @@ const Home = () => {
                 })
               }
             </select>
-            <select className="rounded-md" value={sortBy} onChange={handlesortByChange}>
-              <option value='title'>title asc</option>
-              <option value='-title'>title desc</option>
-              <option value='dueDate'>dueDate asc</option>
-              <option value='-dueDate'>dueDate desc</option>
+            <select className="rounded-md px-1" value={sortBy} onChange={handlesortByChange}>
+              <option value='title'>sort by title - asc</option>
+              <option value='-title'>sort by title - desc</option>
+              <option value='dueDate'>sort by due date - asc</option>
+              <option value='-dueDate'>sort by due date - desc</option>
             </select>
           </div>
-          <div><Button onClick={() => navigate('/add')}> <Plus />New Task</Button></div>
+          <div className="flex-1 flex justify-end"><Button className="w-[200px] h-[40px]" onClick={() => navigate('/add')}> <Plus />New Task</Button></div>
         </div>
         <div className="flex gap-4 flex-wrap  flex-1">
-          {todos}
+          {todoList?.length !== 0 ? todos : <div className=" w-full flex justify-center items-center">
+            <div className="bg-slate-400 p-3">
+            <p className="text-slate-800 text-2xl">No Tasks Found</p></div>
+            </div>
+            }
         </div>
-        <div className="flex justify-center items-center ">
 
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel="Next >"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pageCount}
-            previousLabel="< Previous"
-            renderOnZeroPageCount={null}
-            containerClassName="flex items-center space-x-2 justify-center mt-4"
-            pageClassName="border rounded-lg w-10 h-10 flex items-center justify-center hover:bg-gray-200 cursor-pointer"
-            pageLinkClassName="w-full h-full flex items-center justify-center"
-            activeClassName="bg-blue-500 text-white"
-            previousClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
-            nextClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
-            disabledClassName="opacity-50"
-          />
-        </div>
+        {
+          todoList?.length !== 0 && <div className="flex justify-center items-center ">
+
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel="Next >"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={pageCount}
+              previousLabel="< Previous"
+              renderOnZeroPageCount={null}
+              containerClassName="flex items-center space-x-2 justify-center mt-4"
+              pageClassName="border rounded-lg w-10 h-10 flex items-center justify-center hover:bg-gray-200 cursor-pointer"
+              pageLinkClassName="w-full h-full flex items-center justify-center"
+              activeClassName="bg-blue-500 text-white"
+              previousClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              nextClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              disabledClassName="opacity-50"
+            />
+          </div>
+        }
+
       </div>
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
 
