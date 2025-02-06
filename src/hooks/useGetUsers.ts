@@ -104,6 +104,7 @@ const useGetUsers = () => {
         } catch (error) {
             setIsLoadingTodo(false)
             console.error(error)
+            toast.error('error fetching task')
         } finally {
             setIsLoadingTodo(false)
         }
