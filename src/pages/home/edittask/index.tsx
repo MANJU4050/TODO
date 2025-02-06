@@ -1,24 +1,19 @@
 import { z } from "zod"
-import { toast } from "react-toastify"
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useEffect } from "react"
+import { useParams } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import Loader from "@/components/loader"
-import { getUsersApi } from "@/api/users"
-import { TodoDataPayload, User } from "@/interfaces"
+import { TodoDataPayload } from "@/interfaces"
 import { Button } from "@/components/ui/button"
-import { editTaskApi, getTodoById } from "@/api/todo"
+import useGetUsers from "@/hooks/useGetUsers"
 
 
 const EditTask = () => {
 
   const { id } = useParams()
-  const navigate = useNavigate()
-  const [users, setUsers] = useState<User[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [isEditing, setIsEditing] = useState(false)
+  const { editTask, isEditing, users, getTodo, isLoadingTodo } = useGetUsers()
 
 
   const todoSchema = z.object({
@@ -42,62 +37,32 @@ const EditTask = () => {
     }
   })
 
-  const getUsersAndTodo = async () => {
-    try {
-      setIsLoading(true)
-      const users = await getUsersApi()
-      if (id) {
-        const todo = await getTodoById(id)
-        reset({
-          title: todo?.title,
-          description: todo?.description,
-          assignedUser: todo?.assignedUser,
-          dueDate: todo?.dueDate,
-          status: todo?.status,
-          priority: todo?.priority
-        })
-      }
-      setUsers(users)
-
-    } catch (error) {
-      setIsLoading(false)
-      console.error(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const editTask = async (data: TodoDataPayload) => {
-    try {
-      setIsEditing(true)
-      if (id) {
-        await editTaskApi(id, data)
-        toast.success("task updated successfully")
-        navigate('/')
-      }
-
-    } catch (error) {
-      setIsEditing(false)
-      console.error(error)
-    } finally {
-      setIsEditing(false)
-    }
-  }
-
 
   const onSubmit = (data: TodoDataPayload) => {
-    editTask(data)
+    editTask(id, data)
+  }
+
+  const setInitialValues = async () => {
+    const todo = await getTodo(id)
+    reset({
+      title: todo?.title,
+      description: todo?.description,
+      assignedUser: todo?.assignedUser,
+      dueDate: todo?.dueDate,
+      status: todo?.status,
+      priority: todo?.priority
+    })
   }
 
   useEffect(() => {
-    getUsersAndTodo()
+    setInitialValues()
   }, [])
 
   const userOptions = users?.map((user) => {
     return <option key={user?.id} value={user?.id}>{user?.email}</option>
   })
 
-  if (isLoading) return <Loader />
+  if (isLoadingTodo) return <Loader />
 
   return (
 

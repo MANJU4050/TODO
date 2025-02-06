@@ -12,7 +12,7 @@
     },
     {
       "id": "3",
-      "title": "2Learn JavaS",
+      "title": "7Learn",
       "status": "inProgress",
       "dueDate": "2020-12-31",
       "description": "Learn JavaScript ba",
@@ -22,7 +22,7 @@
     },
     {
       "id": "4",
-      "title": "3Learn JavaS",
+      "title": "2Learn JavaS",
       "status": "todo",
       "dueDate": "2020-12-01",
       "description": "Learn JavaScript ba",
@@ -47,15 +47,6 @@
       "assignedUser": "3",
       "status": "done",
       "priority": "low"
-    },
-    {
-      "id": "953f",
-      "title": "test2",
-      "description": "test2 is test2",
-      "dueDate": "2025-02-15",
-      "assignedUser": "1",
-      "status": "inProgress",
-      "priority": "high"
     },
     {
       "id": "c5ef",
@@ -85,12 +76,12 @@
       "priority": "low"
     },
     {
-      "id": "65bf",
-      "title": "0lear",
-      "description": "this is just a test",
-      "dueDate": "2025-02-20",
-      "assignedUser": "4",
-      "status": "todo",
+      "id": "ed2a",
+      "title": "this",
+      "description": "this is good",
+      "dueDate": "2025-02-15",
+      "assignedUser": "2",
+      "status": "inProgress",
       "priority": "low"
     }
   ],
