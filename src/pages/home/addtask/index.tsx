@@ -6,15 +6,18 @@ import Loader from "@/components/loader"
 import { TodoDataPayload } from "@/interfaces"
 import { Button } from "@/components/ui/button"
 import useGetUsers from "@/hooks/useGetUsers"
+import { ArrowLeft } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 const AddTask = () => {
 
   const { isLoading, users, addTask, isAdding } = useGetUsers()
+  const navigate = useNavigate()
 
   const todoSchema = z.object({
     title: z.string().min(3, "minimum 3 characters").max(12, 'maximum of 12 characters'),
     description: z.string().min(10, "minimum 10 characters").max(20, 'maximum of 20 characters'),
-    dueDate: z.string(),
+    dueDate: z.string().nonempty("duedate is required"),
     assignedUser: z.string().nonempty("assigned user is required"),
     status: z.string(),
     priority: z.string()
@@ -44,13 +47,14 @@ const AddTask = () => {
 
   return (
 
-    <div className=" h-full flex justify-center items-center ">
-      <div className=" w-[600px] flex flex-col gap-8 p-4 bg-slate-700 rounded-md">
+    <div className=" h-full flex justify-center items-center relative">
+      <Button className="absolute top-0 left-0" onClick={()=> navigate('/')}> <ArrowLeft />back</Button>
+      <div className=" w-[400px] flex flex-col gap-8 px-4 bg-slate-700 rounded-md py-10">
         <h1 className="text-4xl text-white text-center">ADD NEW TASK</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <input {...register("title")} className="min-h-[40px] px-2 rounded" type="text" placeholder="title" />
           {errors.title?.message && <p className="text-red-500">{errors.title.message}</p>}
-          <input {...register("description")} className="min-h-[40px] px-2 rounded" type="text" placeholder="description" />
+          <textarea {...register("description")} className="min-h-[40px] p-2 rounded" rows={3}  placeholder="description" />
           {errors.description?.message && <p className="text-red-500">{errors.description.message}</p>}
           <input {...register("dueDate")} className="min-h-[40px] px-2 rounded" type="date" />
           {errors.dueDate?.message && <p className="text-red-500">{errors.dueDate.message}</p>}
