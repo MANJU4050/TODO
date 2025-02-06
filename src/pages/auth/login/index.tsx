@@ -47,11 +47,12 @@ const Login = () => {
   }
   return (
     <div className="flex justify-center items-center w-['100%'] h-screen bg-gray-800">
-      <div className="w-[350px] min-h-[500px] rounded-md flex flex-col justify-center gap-5 items-center p-5">
+      <div className="w-[350px] min-h-[500px] rounded-md flex flex-col justify-center gap-5 items-center p-5 bg-slate-700">
+        <h1 className='text-2xl text-white'>TO DO</h1>
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-          <input type="text" placeholder="username" {...register("username")} />
+          <input className='h-[40px] pl-2 w-[250px] rounded-md' type="text" placeholder="username" {...register("username")} />
           {errors.username?.message && <p className='text-red-500'>{errors.username.message}</p>}
-          <input type="password" placeholder="password" {...register("password")} />
+          <input className='h-[40px] pl-2 w-[250px] rounded-md' type="password" placeholder="password" {...register("password")} />
           {errors.password?.message && <p className='text-red-500'>{errors.password.message}</p>}
 
           <Button type="submit">Login</Button>
