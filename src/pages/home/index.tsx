@@ -134,27 +134,35 @@ const Home = () => {
           <div><Button onClick={() => navigate('/add')}> <Plus />New Task</Button></div>
         </div>
         <div className="flex gap-4 flex-wrap  flex-1">
-          {todos}
+          {todoList?.length !== 0 ? todos : <div className=" w-full flex justify-center items-center">
+            <div className="bg-slate-400 p-3">
+            <p className="text-slate-800 text-2xl">No Tasks Found</p></div>
+            </div>
+            }
         </div>
-        <div className="flex justify-center items-center ">
 
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel="Next >"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pageCount}
-            previousLabel="< Previous"
-            renderOnZeroPageCount={null}
-            containerClassName="flex items-center space-x-2 justify-center mt-4"
-            pageClassName="border rounded-lg w-10 h-10 flex items-center justify-center hover:bg-gray-200 cursor-pointer"
-            pageLinkClassName="w-full h-full flex items-center justify-center"
-            activeClassName="bg-blue-500 text-white"
-            previousClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
-            nextClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
-            disabledClassName="opacity-50"
-          />
-        </div>
+        {
+          todoList?.length !== 0 && <div className="flex justify-center items-center ">
+
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel="Next >"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={pageCount}
+              previousLabel="< Previous"
+              renderOnZeroPageCount={null}
+              containerClassName="flex items-center space-x-2 justify-center mt-4"
+              pageClassName="border rounded-lg w-10 h-10 flex items-center justify-center hover:bg-gray-200 cursor-pointer"
+              pageLinkClassName="w-full h-full flex items-center justify-center"
+              activeClassName="bg-blue-500 text-white"
+              previousClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              nextClassName="border rounded-lg px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              disabledClassName="opacity-50"
+            />
+          </div>
+        }
+
       </div>
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
 
