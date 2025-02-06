@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
-const useGetUsers = () => {
+const useTaskManage = () => {
 
     const navigate = useNavigate()
     const [users, setUsers] = useState<User[]>([])
@@ -62,6 +62,7 @@ const useGetUsers = () => {
 
             setDeleteId("")
             setIsOpen(false)
+            toast.success("task deleted successfully")
 
         } catch (error) {
             console.error(error)
@@ -121,4 +122,4 @@ const useGetUsers = () => {
     }
 }
 
-export default useGetUsers
+export default useTaskManage

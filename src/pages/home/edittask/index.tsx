@@ -7,13 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Loader from "@/components/loader"
 import { TodoDataPayload } from "@/interfaces"
 import { Button } from "@/components/ui/button"
-import useGetUsers from "@/hooks/useGetUsers"
+import useTaskManage from "@/hooks/useTaskManage"
 
 
 const EditTask = () => {
 
   const { id } = useParams()
-  const { editTask, isEditing, users, getTodo, isLoadingTodo } = useGetUsers()
+  const { editTask, isEditing, users, getTodo, isLoadingTodo } = useTaskManage()
   const navigate = useNavigate()
 
 

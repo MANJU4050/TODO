@@ -18,7 +18,7 @@ import { Plus } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { debounce } from 'lodash'
 import ReactPaginate from 'react-paginate';
-import useGetUsers from "@/hooks/useGetUsers"
+import useTaskManage from "@/hooks/useTaskManage"
 
 
 const Home = () => {
@@ -33,7 +33,7 @@ const Home = () => {
   const [itemPerPage] = useState(8)
   const [pageCount, setPageCount] = useState(1)
 
-  const { setTodoList, todoList, setIsOpen, setDeleteId, isOpen, isDeleting, handleDelete } = useGetUsers()
+  const { setTodoList, todoList, setIsOpen, setDeleteId, isOpen, isDeleting, handleDelete } = useTaskManage()
 
   const getTodoList = async (search = '', status = '', userId = '', sortBy = 'title', page = 1, itemPerPage = 8) => {
     try {

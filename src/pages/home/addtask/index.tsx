@@ -5,13 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Loader from "@/components/loader"
 import { TodoDataPayload } from "@/interfaces"
 import { Button } from "@/components/ui/button"
-import useGetUsers from "@/hooks/useGetUsers"
+import useTaskManage from "@/hooks/useTaskManage"
 import { ArrowLeft } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 const AddTask = () => {
 
-  const { isLoading, users, addTask, isAdding } = useGetUsers()
+  const { isLoading, users, addTask, isAdding } = useTaskManage()
   const navigate = useNavigate()
 
   const todoSchema = z.object({
