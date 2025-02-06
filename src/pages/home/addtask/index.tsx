@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { addTodoApi } from "@/api/todo"
 import Loader from "@/components/loader"
 import { getUsersApi } from "@/api/users"
-import { TodoData, User } from "@/interfaces"
+import { TodoDataPayload, User } from "@/interfaces"
 import { Button } from "@/components/ui/button"
 
 const AddTask = () => {
@@ -52,7 +52,7 @@ const AddTask = () => {
     }
   }
 
-  const addTask = async (data: TodoData) => {
+  const addTask = async (data: TodoDataPayload) => {
     try {
       setIsAdding(true)
       const response = await addTodoApi(data)
@@ -68,7 +68,7 @@ const AddTask = () => {
     }
   }
 
-  const onSubmit = (data: TodoData) => {
+  const onSubmit = (data: TodoDataPayload) => {
     addTask(data)
   }
 

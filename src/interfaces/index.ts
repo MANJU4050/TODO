@@ -1,11 +1,15 @@
-export interface TodoData {
-    id: string;
+export interface TodoDataPayload {
     assignedUser: string;
     description: string;
     dueDate: string;
     priority: string;
     status: string;
     title: string;
+}
+
+export interface TodoData extends TodoDataPayload {
+    id: string;
+
 }
 
 export interface User {

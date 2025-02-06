@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import Loader from "@/components/loader"
 import { getUsersApi } from "@/api/users"
-import { TodoData, User } from "@/interfaces"
+import { TodoDataPayload, User } from "@/interfaces"
 import { Button } from "@/components/ui/button"
 import { editTaskApi, getTodoById } from "@/api/todo"
 
@@ -67,7 +67,7 @@ const EditTask = () => {
     }
   }
 
-  const editTask = async (data: TodoData) => {
+  const editTask = async (data: TodoDataPayload) => {
     try {
       setIsEditing(true)
       if (id) {
@@ -85,7 +85,7 @@ const EditTask = () => {
   }
 
 
-  const onSubmit = (data: TodoData) => {
+  const onSubmit = (data: TodoDataPayload) => {
     editTask(data)
   }
 
