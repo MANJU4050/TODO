@@ -26,7 +26,6 @@ const useGetUsers = () => {
             const users = await getUsersApi()
             setUsers(users)
         } catch (error) {
-            setIsLoading(false)
             console.error(error)
             toast.error('error fetching users')
         } finally {
@@ -43,7 +42,6 @@ const useGetUsers = () => {
             navigate('/')
 
         } catch (error) {
-            setIsAdding(false)
             console.error(error)
             toast.error('erroring adding task')
         } finally {
@@ -66,7 +64,6 @@ const useGetUsers = () => {
             setIsOpen(false)
 
         } catch (error) {
-            setIsDeleting(false)
             console.error(error)
             toast.error('error deleting task')
         } finally {
@@ -84,7 +81,6 @@ const useGetUsers = () => {
             }
 
         } catch (error) {
-            setIsEditing(false)
             console.error(error)
             toast.error("error updating task")
         } finally {
@@ -102,7 +98,6 @@ const useGetUsers = () => {
             }
 
         } catch (error) {
-            setIsLoadingTodo(false)
             console.error(error)
             toast.error('error fetching task')
         } finally {
