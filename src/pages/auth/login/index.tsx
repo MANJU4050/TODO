@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuthContext } from "@/context/authcontext"
+import { Label } from '@/components/ui/label'
 
 const Login = () => {
 
@@ -52,11 +53,16 @@ const Login = () => {
       <div className="w-[350px] min-h-[500px] rounded-md flex flex-col justify-center gap-5 items-center p-5 bg-slate-700">
         <h1 className='text-2xl text-white'>TO DO</h1>
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-          <input className='h-[40px] pl-2 w-[250px] rounded-md' type="text" placeholder="username" {...register("username")} />
-          {errors.username?.message && <p className='text-red-500'>{errors.username.message}</p>}
-          <input className='h-[40px] pl-2 w-[250px] rounded-md' type="password" placeholder="password" {...register("password")} />
-          {errors.password?.message && <p className='text-red-500'>{errors.password.message}</p>}
-
+          <div className='flex flex-col gap-2'>
+            <Label className='text-white'>Username</Label>
+            <input className='h-[40px] pl-2 w-[250px] rounded-md' type="text" placeholder="username" {...register("username")} />
+            {errors.username?.message && <p className='text-red-500'>{errors.username.message}</p>}
+          </div>
+          <div className='flex flex-col gap-2'>
+            <Label className='text-white'>Password</Label>
+            <input className='h-[40px] pl-2 w-[250px] rounded-md' type="password" placeholder="password" {...register("password")} />
+            {errors.password?.message && <p className='text-red-500'>{errors.password.message}</p>}
+          </div>
           <Button type="submit">Login</Button>
         </form>
 
