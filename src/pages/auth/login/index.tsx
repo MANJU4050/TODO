@@ -5,18 +5,23 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuthContext } from "@/context/authcontext"
+import { Label } from '@/components/ui/label'
+import { useState } from 'react'
 
 const Login = () => {
 
   const { login } = useAuthContext()
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
 
   const loginSchema = z.object({
     username: z.string().min(5, 'minimum 5 characters').max(10, "maximum 10 characters"),
     password: z.string().min(3, "minimum 3 characters").max(10, 'maximum 15 characters')
   })
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  type LoginFormValues = z.infer<typeof loginSchema>
+
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
@@ -26,6 +31,7 @@ const Login = () => {
 
   const loginUser = async (data: { username: string, password: string }) => {
     try {
+      setIsLoading(true)
       const response = await login(data.username, data.password)
 
       if (response.statusCode === 200) {
@@ -33,11 +39,16 @@ const Login = () => {
         navigate('/')
 
       } else {
+        toast.dismiss()
         toast.error(response.message)
       }
 
     } catch (error) {
       console.error(error)
+      toast.dismiss()
+      toast.error("error loggin in")
+    } finally {
+      setIsLoading(false)
     }
 
   }
@@ -50,12 +61,17 @@ const Login = () => {
       <div className="w-[350px] min-h-[500px] rounded-md flex flex-col justify-center gap-5 items-center p-5 bg-slate-700">
         <h1 className='text-2xl text-white'>TO DO</h1>
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-          <input className='h-[40px] pl-2 w-[250px] rounded-md' type="text" placeholder="username" {...register("username")} />
-          {errors.username?.message && <p className='text-red-500'>{errors.username.message}</p>}
-          <input className='h-[40px] pl-2 w-[250px] rounded-md' type="password" placeholder="password" {...register("password")} />
-          {errors.password?.message && <p className='text-red-500'>{errors.password.message}</p>}
-
-          <Button type="submit">Login</Button>
+          <div className='flex flex-col gap-2'>
+            <Label className='text-white'>Username</Label>
+            <input className='h-[40px] pl-2 w-[250px] rounded-md' type="text" placeholder="username" {...register("username")} />
+            {errors.username?.message && <p className='text-red-500'>{errors.username.message}</p>}
+          </div>
+          <div className='flex flex-col gap-2'>
+            <Label className='text-white'>Password</Label>
+            <input className='h-[40px] pl-2 w-[250px] rounded-md' type="password" placeholder="password" {...register("password")} />
+            {errors.password?.message && <p className='text-red-500'>{errors.password.message}</p>}
+          </div>
+          <Button disabled={isLoading} type="submit">{isLoading ? "Logging in.." : "Login"}</Button>
         </form>
 
 

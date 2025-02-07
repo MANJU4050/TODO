@@ -8,6 +8,7 @@ import Loader from "@/components/loader"
 import { TodoDataPayload } from "@/interfaces"
 import { Button } from "@/components/ui/button"
 import useTaskManage from "@/hooks/useTaskManage"
+import { Label } from "@/components/ui/label"
 
 
 const EditTask = () => {
@@ -20,13 +21,16 @@ const EditTask = () => {
   const todoSchema = z.object({
     title: z.string().min(3, "minimum 3 characters").max(12, 'maximum of 12 characters'),
     description: z.string().min(10, "minimum 10 characters").max(20, 'maximum of 20 characters'),
-    dueDate: z.string(),
+    dueDate: z.string().nonempty("due date is required"),
     assignedUser: z.string().nonempty("assigned user is required"),
     status: z.string(),
     priority: z.string()
   })
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+  type EditTaskFormValues = z.infer<typeof todoSchema>
+
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<EditTaskFormValues>({
     resolver: zodResolver(todoSchema),
     defaultValues: {
       title: "",
@@ -68,35 +72,58 @@ const EditTask = () => {
   return (
 
     <div className=" h-full flex justify-center items-center ">
-      <div className=" w-[400px] flex flex-col gap-8 px-4 py-10 bg-slate-700 rounded-md">
+      <div className=" w-[450px] flex flex-col gap-8 px-4 py-10 bg-slate-700 rounded-md">
         <h1 className="text-4xl text-white text-center">EDIT TASK</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <input {...register("title")} className="min-h-[40px] px-2 rounded" type="text" placeholder="title" />
-          {errors.title?.message && <p className="text-red-500">{errors.title.message}</p>}
-          <textarea {...register("description")} className="min-h-[40px] p-2 rounded" rows={3} placeholder="description" />
-          {errors.description?.message && <p className="text-red-500">{errors.description.message}</p>}
-          <input {...register("dueDate")} className="min-h-[40px] px-2 rounded" type="date" />
-          {errors.dueDate?.message && <p className="text-red-500">{errors.dueDate.message}</p>}
-          <select {...register("assignedUser")} className="min-h-[40px] px-2 rounded" >
-            <option value=''>select user</option>
-            {userOptions}
-          </select>
-          {errors.assignedUser?.message && <p className="text-red-500">{errors.assignedUser.message}</p>}
-          <select {...register("status")} className="min-h-[40px] px-2 rounded" >
-            <option value='todo'>todo</option>
-            <option value='inProgress'>inProgress</option>
-            <option value='done'>done</option>
-          </select>
-          {errors.status?.message && <p className="text-red-500">{errors.status.message}</p>}
-          <select {...register("priority")} className="min-h-[40px] px-2 rounded" >
-            <option value='high'>high</option>
-            <option value='low'>low</option>
-          </select>
-          {errors.priority?.message && <p className="text-red-500">{errors.priority.message}</p>}
-          <div className="flex w-full gap-2">
-          <Button type="button" onClick={()=>{navigate('/')}} variant='secondary'>Cancel</Button>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Label className="text-white">Title</Label>
+            <input {...register("title")} className="min-h-[40px] px-2 rounded" type="text" placeholder="title" />
+            {errors.title?.message && <p className="text-red-500">{errors.title.message}</p>}
+          </div>
 
-          <Button className="flex-1" type='submit'>{isEditing ? "Updating" : "Update"}</Button>
+          <div className="flex flex-col gap-2">
+            <Label className="text-white">Description</Label>
+            <textarea {...register("description")} className="min-h-[40px] p-2 rounded" rows={3} placeholder="description" />
+            {errors.description?.message && <p className="text-red-500">{errors.description.message}</p>}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label className="text-white">Due Date</Label>
+            <input {...register("dueDate")} className="min-h-[40px] px-2 rounded" type="date" />
+            {errors.dueDate?.message && <p className="text-red-500">{errors.dueDate.message}</p>}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label className="text-white">Assign to</Label>
+            <select {...register("assignedUser")} className="min-h-[40px] px-2 rounded" >
+              <option value=''>select user</option>
+              {userOptions}
+            </select>
+            {errors.assignedUser?.message && <p className="text-red-500">{errors.assignedUser.message}</p>}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label className="text-white">Status</Label>
+            <select {...register("status")} className="min-h-[40px] px-2 rounded" >
+              <option value='todo'>todo</option>
+              <option value='inProgress'>inProgress</option>
+              <option value='done'>done</option>
+            </select>
+            {errors.status?.message && <p className="text-red-500">{errors.status.message}</p>}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label className="text-white">Priority</Label>
+            <select {...register("priority")} className="min-h-[40px] px-2 rounded" >
+              <option value='high'>high</option>
+              <option value='low'>low</option>
+            </select>
+            {errors.priority?.message && <p className="text-red-500">{errors.priority.message}</p>}
+          </div>
+          <div className="flex w-full gap-2">
+            <Button type="button" onClick={() => { navigate('/') }} variant='secondary'>Cancel</Button>
+
+            <Button disabled={isEditing} className="flex-1" type='submit'>{isEditing ? "Updating" : "Update"}</Button>
 
           </div>
 

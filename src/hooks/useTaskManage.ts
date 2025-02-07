@@ -9,14 +9,14 @@ const useTaskManage = () => {
 
     const navigate = useNavigate()
     const [users, setUsers] = useState<User[]>([])
-    const [isLoading, setIsLoading] = useState(false)
-    const [isAdding, setIsAdding] = useState(false)
-    const [isDeleting, setIsDeleting] = useState(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isAdding, setIsAdding] = useState<boolean>(false)
+    const [isDeleting, setIsDeleting] = useState<boolean>(false)
     const [deleteId, setDeleteId] = useState<string>('')
     const [todoList, setTodoList] = useState<TodoCardData[]>([])
-    const [isOpen, setIsOpen] = useState(false)
-    const [isEditing, setIsEditing] = useState(false)
-    const [isLoadingTodo, setIsLoadingTodo] = useState(false)
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [isEditing, setIsEditing] = useState<boolean>(false)
+    const [isLoadingTodo, setIsLoadingTodo] = useState<boolean>(false)
 
 
 
@@ -27,6 +27,7 @@ const useTaskManage = () => {
             setUsers(users)
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error('error fetching users')
         } finally {
             setIsLoading(false)
@@ -36,13 +37,13 @@ const useTaskManage = () => {
     const addTask = async (data: TodoDataPayload) => {
         try {
             setIsAdding(true)
-            const response = await addTodoApi(data)
+             await addTodoApi(data)
 
-            console.log(response, "add response")
             navigate('/')
 
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error('erroring adding task')
         } finally {
             setIsAdding(false)
@@ -53,19 +54,13 @@ const useTaskManage = () => {
         try {
             setIsDeleting(true)
             await deleteTodoApi(deleteId)
-
-            setTodoList((prev) => {
-                return prev?.filter((todo) => {
-                    return todo.id !== deleteId
-                })
-            })
-
             setDeleteId("")
             setIsOpen(false)
             toast.success("task deleted successfully")
 
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error('error deleting task')
         } finally {
             setIsDeleting(false)
@@ -83,6 +78,7 @@ const useTaskManage = () => {
 
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error("error updating task")
         } finally {
             setIsEditing(false)
@@ -100,6 +96,7 @@ const useTaskManage = () => {
 
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error('error fetching task')
         } finally {
             setIsLoadingTodo(false)

@@ -19,25 +19,29 @@ import { useNavigate } from "react-router-dom"
 import { debounce } from 'lodash'
 import ReactPaginate from 'react-paginate';
 import useTaskManage from "@/hooks/useTaskManage"
+import { toast } from "react-toastify"
+import Loader from "@/components/loader"
 
 
 const Home = () => {
 
   const navigate = useNavigate()
-  const [searchTerm, setSearchTerm] = useState('')
-  const [status, setStatus] = useState('')
-  const [userId, setUserId] = useState('')
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [status, setStatus] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
   const [users, setUsers] = useState<User[]>([])
-  const [sortBy, setSortBy] = useState('title')
-  const [page, setPage] = useState(1)
-  const [itemPerPage] = useState(8)
-  const [pageCount, setPageCount] = useState(1)
+  const [sortBy, setSortBy] = useState<string>('title')
+  const [page, setPage] = useState<number>(1)
+  const [itemPerPage] = useState<number>(8)
+  const [pageCount, setPageCount] = useState<number>(1)
+  const [refetch, setRefetch] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { setTodoList, todoList, setIsOpen, setDeleteId, isOpen, isDeleting, handleDelete } = useTaskManage()
 
   const getTodoList = async (search = '', status = '', userId = '', sortBy = 'title', page = 1, itemPerPage = 8) => {
     try {
-
+      setIsLoading(true)
       const todos = await getTodosApi(search, status, userId, sortBy, page, itemPerPage)
       const users = await getUsersApi()
 
@@ -56,14 +60,16 @@ const Home = () => {
 
     } catch (error) {
       console.error(error)
+      toast.error("error fetching tasks")
+    } finally {
+      setIsLoading(false)
     }
   }
 
 
-
   useEffect(() => {
     getTodoList(searchTerm, status, userId, sortBy, page, itemPerPage)
-  }, [status, userId, sortBy, page])
+  }, [status, userId, sortBy, page, refetch])
 
   const debounceSearch = useCallback(debounce((search: string) => {
     getTodoList(search, status, userId, sortBy, page, itemPerPage)
@@ -133,13 +139,18 @@ const Home = () => {
           </div>
           <div className="flex-1 flex justify-end"><Button className="w-[200px] h-[40px]" onClick={() => navigate('/add')}> <Plus />New Task</Button></div>
         </div>
-        <div className="flex gap-4 flex-wrap  flex-1">
-          {todoList?.length !== 0 ? todos : <div className=" w-full flex justify-center items-center">
-            <div className="bg-slate-400 p-3">
-            <p className="text-slate-800 text-2xl">No Tasks Found</p></div>
+
+        {isLoading ? <Loader /> : 
+
+          <div className="flex gap-4 flex-wrap  flex-1">
+            {todoList?.length !== 0 ? todos : <div className=" w-full flex justify-center items-center">
+              <div className="bg-slate-400 p-3">
+                <p className="text-slate-800 text-2xl">No Tasks Found</p></div>
             </div>
             }
-        </div>
+          </div>
+        }
+
 
         {
           todoList?.length !== 0 && <div className="flex justify-center items-center ">
@@ -176,7 +187,12 @@ const Home = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <Button className="bg-red-500" onClick={handleDelete}>{isDeleting ? "Deleting.." : "Delete"}</Button>
+            <Button disabled={isDeleting} className="bg-red-500" onClick={() => {
+              handleDelete().then(() => {
+                setRefetch(!refetch)
+              })
+
+            }}>{isDeleting ? "Deleting.." : "Delete"}</Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
