@@ -46,7 +46,7 @@ const AddTask = () => {
     return <option key={user?.id} value={user?.id}>{user?.email}</option>
   })
 
-  if (isLoading) return <Loader />
+  if (isLoading) return <div className="flex h-full"> <Loader /> </div>
 
   return (
 
