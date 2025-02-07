@@ -163,6 +163,7 @@ const Home = () => {
               pageCount={pageCount}
               previousLabel="< Previous"
               renderOnZeroPageCount={null}
+              forcePage={page - 1}
               containerClassName="flex items-center space-x-2 justify-center mt-4"
               pageClassName="border rounded-lg w-10 h-10 flex items-center justify-center hover:bg-gray-200 cursor-pointer"
               pageLinkClassName="w-full h-full flex items-center justify-center"
