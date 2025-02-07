@@ -53,7 +53,7 @@ const AddTask = () => {
     <div className=" h-full flex justify-center items-center relative">
       <Button className="absolute top-0 left-0" onClick={() => navigate('/')}> <ArrowLeft />back</Button>
       <div className=" w-[450px] flex flex-col gap-8 px-4 py-10 bg-slate-700 rounded-md">
-        <h1 className="text-4xl text-white text-center">EDIT TASK</h1>
+        <h1 className="text-4xl text-white text-center">ADD TASK</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <Label className="text-white">Title</Label>
