@@ -71,7 +71,7 @@ const Login = () => {
             <input className='h-[40px] pl-2 w-[250px] rounded-md' type="password" placeholder="password" {...register("password")} />
             {errors.password?.message && <p className='text-red-500'>{errors.password.message}</p>}
           </div>
-          <Button disabled={isLoading} type="submit">Login</Button>
+          <Button disabled={isLoading} type="submit">{isLoading ? "Logging in.." : "Login"}</Button>
         </form>
 
 
