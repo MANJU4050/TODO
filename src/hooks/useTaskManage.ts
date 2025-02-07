@@ -36,9 +36,8 @@ const useTaskManage = () => {
     const addTask = async (data: TodoDataPayload) => {
         try {
             setIsAdding(true)
-            const response = await addTodoApi(data)
+             await addTodoApi(data)
 
-            console.log(response, "add response")
             navigate('/')
 
         } catch (error) {
