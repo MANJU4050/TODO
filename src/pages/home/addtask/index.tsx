@@ -100,7 +100,7 @@ const AddTask = () => {
             </select>
             {errors.priority?.message && <p className="text-red-500">{errors.priority.message}</p>}
           </div>
-          <Button type='submit'>{isAdding ? "adding" : "Add task"}</Button>
+          <Button disabled={isAdding} type='submit'>{isAdding ? "adding" : "Add task"}</Button>
 
         </form>
 

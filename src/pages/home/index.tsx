@@ -176,7 +176,7 @@ const Home = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <Button className="bg-red-500" onClick={() => {
+            <Button disabled={isDeleting} className="bg-red-500" onClick={() => {
               handleDelete().then(() => {
                 setRefetch(!refetch)
               })

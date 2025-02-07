@@ -123,7 +123,7 @@ const EditTask = () => {
           <div className="flex w-full gap-2">
             <Button type="button" onClick={() => { navigate('/') }} variant='secondary'>Cancel</Button>
 
-            <Button className="flex-1" type='submit'>{isEditing ? "Updating" : "Update"}</Button>
+            <Button disabled={isEditing} className="flex-1" type='submit'>{isEditing ? "Updating" : "Update"}</Button>
 
           </div>
 

@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuthContext } from "@/context/authcontext"
 import { Label } from '@/components/ui/label'
+import { useState } from 'react'
 
 const Login = () => {
 
   const { login } = useAuthContext()
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
 
   const loginSchema = z.object({
     username: z.string().min(5, 'minimum 5 characters').max(10, "maximum 10 characters"),
@@ -29,6 +31,7 @@ const Login = () => {
 
   const loginUser = async (data: { username: string, password: string }) => {
     try {
+      setIsLoading(true)
       const response = await login(data.username, data.password)
 
       if (response.statusCode === 200) {
@@ -42,6 +45,10 @@ const Login = () => {
 
     } catch (error) {
       console.error(error)
+      toast.dismiss()
+      toast.error("error loggin in")
+    } finally {
+      setIsLoading(false)
     }
 
   }
@@ -64,7 +71,7 @@ const Login = () => {
             <input className='h-[40px] pl-2 w-[250px] rounded-md' type="password" placeholder="password" {...register("password")} />
             {errors.password?.message && <p className='text-red-500'>{errors.password.message}</p>}
           </div>
-          <Button type="submit">Login</Button>
+          <Button disabled={isLoading} type="submit">Login</Button>
         </form>
 
 
