@@ -26,7 +26,10 @@ const EditTask = () => {
     priority: z.string()
   })
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+  type EditTaskFormValues = z.infer<typeof todoSchema>
+
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<EditTaskFormValues>({
     resolver: zodResolver(todoSchema),
     defaultValues: {
       title: "",

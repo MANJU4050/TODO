@@ -16,7 +16,9 @@ const Login = () => {
     password: z.string().min(3, "minimum 3 characters").max(10, 'maximum 15 characters')
   })
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  type LoginFormValues = z.infer<typeof loginSchema>
+
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
