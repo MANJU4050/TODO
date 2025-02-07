@@ -52,13 +52,6 @@ const useTaskManage = () => {
         try {
             setIsDeleting(true)
             await deleteTodoApi(deleteId)
-
-            setTodoList((prev) => {
-                return prev?.filter((todo) => {
-                    return todo.id !== deleteId
-                })
-            })
-
             setDeleteId("")
             setIsOpen(false)
             toast.success("task deleted successfully")

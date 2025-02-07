@@ -32,6 +32,7 @@ const Home = () => {
   const [page, setPage] = useState<number>(1)
   const [itemPerPage] = useState<number>(8)
   const [pageCount, setPageCount] = useState<number>(1)
+  const [refetch, setRefetch] = useState<boolean>(false)
 
   const { setTodoList, todoList, setIsOpen, setDeleteId, isOpen, isDeleting, handleDelete } = useTaskManage()
 
@@ -60,10 +61,9 @@ const Home = () => {
   }
 
 
-
   useEffect(() => {
     getTodoList(searchTerm, status, userId, sortBy, page, itemPerPage)
-  }, [status, userId, sortBy, page])
+  }, [status, userId, sortBy, page, refetch])
 
   const debounceSearch = useCallback(debounce((search: string) => {
     getTodoList(search, status, userId, sortBy, page, itemPerPage)
@@ -136,9 +136,9 @@ const Home = () => {
         <div className="flex gap-4 flex-wrap  flex-1">
           {todoList?.length !== 0 ? todos : <div className=" w-full flex justify-center items-center">
             <div className="bg-slate-400 p-3">
-            <p className="text-slate-800 text-2xl">No Tasks Found</p></div>
-            </div>
-            }
+              <p className="text-slate-800 text-2xl">No Tasks Found</p></div>
+          </div>
+          }
         </div>
 
         {
@@ -176,7 +176,12 @@ const Home = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <Button className="bg-red-500" onClick={handleDelete}>{isDeleting ? "Deleting.." : "Delete"}</Button>
+            <Button className="bg-red-500" onClick={() => {
+              handleDelete().then(() => {
+                setRefetch(!refetch)
+              })
+
+            }}>{isDeleting ? "Deleting.." : "Delete"}</Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
