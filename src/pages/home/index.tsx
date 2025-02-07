@@ -24,14 +24,14 @@ import useTaskManage from "@/hooks/useTaskManage"
 const Home = () => {
 
   const navigate = useNavigate()
-  const [searchTerm, setSearchTerm] = useState('')
-  const [status, setStatus] = useState('')
-  const [userId, setUserId] = useState('')
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [status, setStatus] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
   const [users, setUsers] = useState<User[]>([])
-  const [sortBy, setSortBy] = useState('title')
-  const [page, setPage] = useState(1)
-  const [itemPerPage] = useState(8)
-  const [pageCount, setPageCount] = useState(1)
+  const [sortBy, setSortBy] = useState<string>('title')
+  const [page, setPage] = useState<number>(1)
+  const [itemPerPage] = useState<number>(8)
+  const [pageCount, setPageCount] = useState<number>(1)
 
   const { setTodoList, todoList, setIsOpen, setDeleteId, isOpen, isDeleting, handleDelete } = useTaskManage()
 

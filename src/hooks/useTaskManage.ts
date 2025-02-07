@@ -9,14 +9,14 @@ const useTaskManage = () => {
 
     const navigate = useNavigate()
     const [users, setUsers] = useState<User[]>([])
-    const [isLoading, setIsLoading] = useState(false)
-    const [isAdding, setIsAdding] = useState(false)
-    const [isDeleting, setIsDeleting] = useState(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isAdding, setIsAdding] = useState<boolean>(false)
+    const [isDeleting, setIsDeleting] = useState<boolean>(false)
     const [deleteId, setDeleteId] = useState<string>('')
     const [todoList, setTodoList] = useState<TodoCardData[]>([])
-    const [isOpen, setIsOpen] = useState(false)
-    const [isEditing, setIsEditing] = useState(false)
-    const [isLoadingTodo, setIsLoadingTodo] = useState(false)
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [isEditing, setIsEditing] = useState<boolean>(false)
+    const [isLoadingTodo, setIsLoadingTodo] = useState<boolean>(false)
 
 
 
