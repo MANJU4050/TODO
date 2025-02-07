@@ -38,13 +38,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                     }
                 } else {
                     return {
-                        message: "invalid password",
+                        message: "invalid credentials",
                         statusCode: 401
                     }
                 }
             } else {
                 return {
-                    message: "invalid username",
+                    message: "invalid credentials",
                     statusCode: 401
                 }
             }
