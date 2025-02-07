@@ -36,6 +36,7 @@ const Login = () => {
         navigate('/')
 
       } else {
+        toast.dismiss()
         toast.error(response.message)
       }
 

@@ -27,6 +27,7 @@ const useTaskManage = () => {
             setUsers(users)
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error('error fetching users')
         } finally {
             setIsLoading(false)
@@ -42,6 +43,7 @@ const useTaskManage = () => {
 
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error('erroring adding task')
         } finally {
             setIsAdding(false)
@@ -58,6 +60,7 @@ const useTaskManage = () => {
 
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error('error deleting task')
         } finally {
             setIsDeleting(false)
@@ -75,6 +78,7 @@ const useTaskManage = () => {
 
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error("error updating task")
         } finally {
             setIsEditing(false)
@@ -92,6 +96,7 @@ const useTaskManage = () => {
 
         } catch (error) {
             console.error(error)
+            toast.dismiss()
             toast.error('error fetching task')
         } finally {
             setIsLoadingTodo(false)
